@@ -1,41 +1,41 @@
-<table class="w-full text-left">
+<table class="w-full text-left table-fixed">
     <thead>
         <tr>
-            <th class="pb-4 pt-2">No</th>
-            <th class="pb-4 pt-2">ID Periksa</th>
+            <th class="pb-4 pt-2 w-24">No Urut</th>
             <th class="pb-4 pt-2">Nama Pasien</th>
-            <th class="pb-4 pt-2">Tanggal Periksa</th>
-            <th class="pb-4 pt-2">Catatan</th>
+            <th class="pb-4 pt-2">Keluhan</th>
             <th class="pb-4 pt-2">Aksi</th>
         </tr>
     </thead>
     <tbody>
-        @if (is_null($periksas))
+        @if (is_null($janjiPeriksas) || count($janjiPeriksas) < 1)
             <tr class="border-t-1 border-gray-300">
-                <td colspan="5" class="pb-2 pt-4 text-center">Belum Ada Periksa</td>
+                <td colspan="4" class="pb-2 pt-4 text-center">Belum Ada Pasien</td>
             </tr>
         @else
-            @foreach ($periksas as $periksa)
+            @foreach ($janjiPeriksas as $janji)
+                {{-- @foreach ($jadwal->janjiPeriksa as $janjiIndex => $janji) --}}
                 <tr>
-                    <th class="pb-2 pt-4">{{ $loop->index + 1 }}</th>
-                    <td class="pb-2 pt-4">{{ $periksa->id }}</td>
-                    <td class="pb-2 pt-4">{{ $periksa->pasien->nama }}</td>
-                    @if (is_null($periksa->tgl_periksa))
-                        <td class="pb-2 pt-4">Belum Ditentukan</td>
+                    <th class="pb-2 pt-4">{{ $janji->no_antrian }}</th>
+                    @if (!is_null($janji->pasien))
+                        <td class="pb-2 pt-4">{{ $janji->pasien->nama }}</td>
                     @else
-                        <td class="pb-2 pt-4">{{ $periksa->tgl_periksa }}</td>
+                        <td class="pb-2 pt-4">Tidak Diketahui</td>
                     @endif
-                    @if (is_null($periksa->catatan))
-                        <td class="pb-2 pt-4">Belum Ditentukan</td>
-                    @else
-                        <td class="pb-2 pt-4">{{ $periksa->catatan }}</td>
-                    @endif
+                    <td class="pb-2 pt-4">{{ $janji->keluhan }}</td>
                     <td class="py-2">
-                        <button wire:click="emitDetailCheck({{ $periksa->id }})" class="bg-yellow-600 text-white px-3 py-1 rounded-md">Detail</button>
-                        <button wire:click="emitDetailEdit({{ $periksa->id }})" class="bg-blue-500 text-white px-3 py-1 rounded-md">Edit</button>
-                        <button wire:click="destroy({{ $periksa->id }})" class="bg-red-500 text-white px-3 py-1 rounded-md">Delete</button>
+                        @if (!is_null($janji->periksa))
+                            <button wire:click="emitDetailCheck({{ $janji->periksa->id }})"
+                                class="bg-blue-500 text-white px-3 py-1 rounded-md">Cek</button>
+                            <button wire:click="emitDetailEdit({{ $janji->id }})"
+                                class="bg-yellow-600 text-white px-3 py-1 rounded-md">Edit</button>
+                        @else
+                            <button wire:click="emitDetailEdit({{ $janji->id }})"
+                                class="bg-blue-500 text-white px-3 py-1 rounded-md">Periksa</button>
+                        @endif
                     </td>
                 </tr>
+                {{-- @endforeach --}}
             @endforeach
         @endif
     </tbody>

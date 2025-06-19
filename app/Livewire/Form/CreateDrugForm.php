@@ -50,6 +50,17 @@ class CreateDrugForm extends Component
         $this->dispatch('daftarObatUpdated');
     }
 
+    #[On('cancelEditDrugData')]
+    public function clear(int $id)
+    {
+        $obat = Obat::find($id);
+        $this->nama_obat = null;
+        $this->jenis_kemasan = null;
+        $this->harga = null;
+        $this->mode = 'edit';
+        $this->dispatch('daftarObatUpdated');
+    }
+
     #[On('deleteDrugData')]
     public function destroy(int $id)
     {

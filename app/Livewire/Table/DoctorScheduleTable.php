@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class DoctorScheduleTable extends Component
 {
-    protected $listeners = ['daftarPeriksaUpdated' => '$refresh'];
+    protected $listeners = ['daftarJadwalUpdated' => '$refresh'];
 
     public function emitActivate(int $id)
     {

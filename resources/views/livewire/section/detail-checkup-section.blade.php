@@ -15,7 +15,7 @@
         @if ($mode === 'details')
             <livewire:details.patient-checkup-details :checkupId="$checkupId" :key="'details-' . $checkupId"  />
         @elseif ($mode === 'edit')
-            <livewire:form.checkup-edit-form :checkupId="$checkupId" :key="'edit-' . $checkupId"  />
+            <livewire:form.checkup-edit-form :janjiId="$janjiId" :key="'edit-' . $janjiId"  />
         @else
             <header class="font-semibold text-lg text-black text-center py-8">
                 <h4>

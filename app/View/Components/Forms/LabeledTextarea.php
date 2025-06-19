@@ -3,11 +3,10 @@
 namespace App\View\Components\Forms;
 
 use Closure;
-use App\Models\User;
-use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
 
-class LabeledInput extends Component
+class LabeledTextarea extends Component
 {
     /**
      * Create a new component instance.
@@ -19,12 +18,11 @@ class LabeledInput extends Component
         public string $label = "Label",
         public string $placeholder = "Write here...",
         public $model = null,
-        public $maxLength = null,
-        public $minLength = null,
         public bool $disabled = false,
-        public bool $readonly = false
-    )
-    {
+        public bool $readonly = false,
+        public string $cols = "30",
+        public string $rows = "3"
+    ) {
         //
     }
 
@@ -33,6 +31,6 @@ class LabeledInput extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.forms.labeled-input');
+        return view('components.forms.labeled-textarea');
     }
 }

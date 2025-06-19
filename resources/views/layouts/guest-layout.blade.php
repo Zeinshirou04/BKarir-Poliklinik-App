@@ -14,10 +14,10 @@
 </head>
 
 <body>
+    <livewire:scripts />
     <div class="w-dvw h-dvh bg-gradient-to-br from-gray-300 to-gray-100 flex flex-col justify-center items-center">
         @yield('content')
     </div>
-    @livewireScripts
 </body>
 
 </html>

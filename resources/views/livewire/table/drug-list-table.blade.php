@@ -1,11 +1,11 @@
-<table class="w-full text-left">
+<table class="w-full text-left h-full table-fixed my-4">
     <thead>
-        <tr>
-            <th class="pb-4 pt-2">No</th>
-            <th class="pb-4 pt-2">Nama Obat</th>
-            <th class="pb-4 pt-2">Kemasan</th>
-            <th class="pb-4 pt-2">Harga</th>
-            <th class="pb-4 pt-2">Aksi</th>
+        <tr class="bg-gray-300">
+            <th class="p-4 rounded-tl-lg w-16">No</th>
+            <th class="p-4">Nama Obat</th>
+            <th class="p-4">Kemasan</th>
+            <th class="p-4">Harga</th>
+            <th class="p-4 rounded-tr-lg">Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -15,14 +15,22 @@
             </tr>
         @else
             @foreach ($obats as $obat)
-                <tr>
-                    <th class="py-2">{{ $loop->index + 1 }}</th>
-                    <td class="py-2">{{ $obat->nama_obat }}</td>
-                    <td class="py-2">{{ $obat->kemasan }}</td>
-                    <td class="py-2">Rp. {{ number_format($obat->harga, 0, ',', '.') }}</td>
-                    <td class="py-2">
-                        <button wire:click="emitEditDrug({{ $obat->id }})" class="bg-blue-500 text-white px-3 py-1 rounded-md">Edit</button>
-                        <button wire:click="emitDeleteDrug({{ $obat->id }})"  class="bg-red-500 text-white px-3 py-1 rounded-md">Delete</button>
+                <tr class="hover:bg-gray-100">
+                    <th class="p-4 border-b-2 border-b-gray-200">{{ $loop->index + 1 }}</th>
+                    <td class="p-4 border-b-2 border-b-gray-200">{{ $obat->nama_obat }}</td>
+                    <td class="p-4 border-b-2 border-b-gray-200">{{ $obat->kemasan }}</td>
+                    <td class="p-4 border-b-2 border-b-gray-200">Rp.
+                        {{ number_format($obat->harga, 0, ',', '.') }}</td>
+                    <td class="p-4 border-b-2 border-b-gray-200">
+                        @if ($mode === 'edit' && $currentDrugId === $obat->id)
+                            <button wire:click="emitCancelEditDrug({{ $obat->id }})"
+                                class="bg-red-500 text-white px-3 py-1 rounded-md">Cancel</button>
+                        @else
+                            <button wire:click="emitEditDrug({{ $obat->id }})"
+                                class="bg-blue-500 text-white px-3 py-1 rounded-md">Edit</button>
+                            <button wire:click="emitDeleteDrug({{ $obat->id }})"
+                                class="bg-red-500 text-white px-3 py-1 rounded-md">Delete</button>
+                        @endif
                     </td>
                 </tr>
             @endforeach

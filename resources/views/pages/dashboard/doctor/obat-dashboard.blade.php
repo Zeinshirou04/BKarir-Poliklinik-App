@@ -1,7 +1,7 @@
 @extends('layouts.authenticated-layout')
 
 @section('content')
-    <div class="w-full h-full">
+    <div class="w-full h-full overflow-y-hidden">
         <section id="obat-list-container" class="w-full h-full flex flex-col gap-12">
             <header class="w-min h-auto">
                 <h2 class="text-5xl font-semibold text-blue-900">Obat</h2>
@@ -14,7 +14,7 @@
                             <h3 class="font-semibold text-md">List Obat</h3>
                         </div>
                     </div>
-                    <div id="obat-table" class="w-full bg-white px-8 py-4 rounded-b-md">
+                    <div id="obat-table" class="w-full bg-white px-8 py-4 rounded-b-md overflow-y-auto max-h-2/3 h-2/3">
                         <livewire:table.drug-list-table />
                     </div>
                 </div>
@@ -29,7 +29,6 @@
                         <livewire:form.create-drug-form />
                     </div>
                 </div>
-
             </div>
         </section>
     </div>

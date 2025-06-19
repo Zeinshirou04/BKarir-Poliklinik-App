@@ -14,9 +14,7 @@ class CheckupRegisController extends Controller
      */
     public function index()
     {
-        $userId = Auth::user()->getAuthIdentifier();
-        $periksas = Periksa::where('id_pasien', $userId)->get();
-        return view('pages.dashboard.patient.periksa-dashboard', compact('periksas'));
+        return view('pages.dashboard.patient.periksa-dashboard');
     }
 
     /**

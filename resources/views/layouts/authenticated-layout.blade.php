@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <livewire:scripts />
     <div class="w-dvw h-dvh bg-gradient-to-br from-gray-300 to-gray-100 flex flex-row justify-center items-center">
         <x-layouts.sidebar />
         <div class="w-full h-full px-12 py-8 flex flex-col">
@@ -21,7 +22,6 @@
             @yield('content')
         </div>
     </div>
-    @livewireScripts
 </body>
 
 </html>

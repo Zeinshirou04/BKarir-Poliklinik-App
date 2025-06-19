@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Checkup\JadwalPeriksa;
+use App\Models\Checkup\JanjiPeriksa;
 use App\Models\Checkup\Periksa;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -51,14 +54,31 @@ class User extends Authenticatable
         ];
     }
 
+    public function jadwalPeriksa(): HasMany
+    {
+        return $this->hasMany(JadwalPeriksa::class, 'id_dokter');
+    }
+
+    public function janjiPeriksa(): HasMany
+    {
+        return $this->hasMany(JanjiPeriksa::class, 'id_pasien');
+    }
+
     /**
      * Get all of the comments for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function pasien_periksa(): HasMany
+    public function periksa(): HasManyThrough
     {
-        return $this->hasMany(Periksa::class, 'id_pasien', 'id');
+        return $this->hasManyThrough(
+            Periksa::class,
+            JanjiPeriksa::class,
+            'id_pasien',
+            'id_janji_periksa',
+            'id',
+            'id'
+        );
     }
 
     /**

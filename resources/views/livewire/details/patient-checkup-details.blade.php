@@ -5,37 +5,43 @@
                 <h5 class="font-semibold w-32">
                     Nama Pasien
                 </h5>
-                <p class="max-w-32 w-32">{{ $details->periksa->pasien->nama }}</p>
+                <p class="max-w-52 w-52">{{ $periksa->pasien->nama }}</p>
             </div>
             <div class="flex gap-4">
                 <h5 class="font-semibold w-32">
                     Tanggal Periksa
                 </h5>
-                <p class="max-w-32 w-32">{{ $details->periksa->tgl_periksa === null ? 'Belum Ditentukan' : $details->periksa->tgl_periksa }}
+                <p class="max-w-52 w-52">
+                    {{ $periksa->tgl_periksa === null ? 'Belum Ditentukan' : \Carbon\Carbon::parse(time: $periksa->tgl_periksa)->format('Y-m-d H.i') }}
                 </p>
             </div>
             <div class="flex gap-4">
                 <h5 class="font-semibold w-32">
                     Obat
                 </h5>
-                @if (is_null($details->obat))
-                    <p class="max-w-32 w-32">Belum Ditentukan</p>
-                @else
-                    <p class="max-w-32 w-32">{{ $details->obat->nama_obat }}</p>
-                @endif
+                <div class="flex flex-col">
+                    @if (is_null($detailPeriksas))
+                        <p class="max-w-52 w-52">Belum Ditentukan</p>
+                    @else
+                        @foreach ($detailPeriksas as $detail)
+                            <p class="max-w-52 w-52">{{ $detail->obat->nama_obat }} (Rp. {{ number_format($detail->obat->harga, 0, ',', '.') }})</p>
+                        @endforeach
+                    @endif
+                </div>
             </div>
             <div class="flex gap-4">
                 <h5 class="font-semibold w-32">
                     Catatan
                 </h5>
-                <p class="max-w-32 w-32">{{ $details->periksa->catatan=== null ? 'Belum Ditentukan' : $details->periksa->catatan }}
+                <p class="max-w-52 w-52">{{ $periksa->catatan === null ? 'Belum Ditentukan' : $periksa->catatan }}
                 </p>
             </div>
             <div class="flex gap-4">
                 <h5 class="font-semibold w-32">
-                    Biaya Periksa
+                    Total Biaya Periksa
                 </h5>
-                <p class="max-w-32 w-32">{{ $details->periksa->biaya_periksa === null ? 'Belum Ditentukan' : "Rp. " . number_format($details->periksa->biaya_periksa, 0, ',', '.') }}
+                <p class="max-w-52 w-52">
+                    {{ $periksa->biaya_periksa === null ? 'Belum Ditentukan' : 'Rp. ' . number_format($periksa->biaya_periksa, 0, ',', '.') }}
                 </p>
             </div>
         </div>

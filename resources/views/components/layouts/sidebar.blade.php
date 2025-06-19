@@ -11,7 +11,7 @@
             <x-buttons.sidebar-button
                 route="{{ $role === 'dokter' ? 'dashboard.doctor.periksa' : 'dashboard.patient.periksa' }}"
                 active="{{ $role === 'dokter' ? Route::currentRouteName() === 'dashboard.doctor.periksa' : Route::currentRouteName() === 'dashboard.patient.periksa' }}"
-                label="Periksa" />
+                label="Janji Periksa" />
             @if ($role === 'dokter')
                 <x-buttons.sidebar-button
                     route="{{ $role === 'dokter' ? 'dashboard.doctor.jadwal.periksa' : 'dashboard.patient.periksa' }}"

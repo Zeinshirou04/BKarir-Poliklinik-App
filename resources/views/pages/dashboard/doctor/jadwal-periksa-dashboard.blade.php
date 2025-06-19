@@ -3,7 +3,7 @@
 @section('content')
     <div class="w-full h-full">
         <section id="schedule-list-container" class="w-full h-full flex flex-col gap-12">
-            <header class="w-min h-auto">
+            <header class="w-auto h-auto">
                 <h2 class="text-5xl font-semibold text-blue-900">Jadwal Periksa</h2>
             </header>
             <div id="schedule-table-container" class="w-full h-full rounded-md flex gap-4">

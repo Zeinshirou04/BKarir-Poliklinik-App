@@ -8,34 +8,48 @@ use Livewire\Component;
 use App\Models\Item\Obat;
 use App\Models\Checkup\Periksa;
 use App\Models\Checkup\DetailPeriksa;
+use App\Models\Checkup\JanjiPeriksa;
 
 class CheckupEditForm extends Component
 {
-    public $checkupId;
+    public $janjiId;
     public $nama_pasien;
     public $tgl_periksa;
-    public $id_obat;
+    public $id_obats;
     public $catatan;
-    public $biaya_periksa;
+    public $biaya_periksa = 150000;
 
-    public function update() {
+    public function update()
+    {
         try {
-            $id_pasien = Periksa::find($this->checkupId)->id_pasien;
-            $pasien = User::find($id_pasien);
-            $pasien->nama = $this->nama_pasien;
-            $pasien->save();
+            $obats = Obat::whereIn('id', $this->id_obats)->get();
+            $this->biaya_periksa += $obats->sum('harga');
+            
+            // dd($this->biaya_periksa);
 
-            $periksa = Periksa::find($this->checkupId);
-            $periksa->tgl_periksa = $this->tgl_periksa;
-            $periksa->catatan = $this->catatan;
-            $periksa->biaya_periksa = $this->biaya_periksa;
-            $periksa->save();
+            $periksa = Periksa::updateOrCreate(
+                ['id_janji_periksa' => $this->janjiId],
+                [
+                    'id_janji_periksa' => $this->janjiId,
+                    'tgl_periksa' => $this->tgl_periksa,
+                    'catatan' => $this->catatan,
+                    'biaya_periksa' => $this->biaya_periksa
+                ]
+            );
 
-            $detail = DetailPeriksa::find($this->checkupId);
-            $detail->id_obat = $this->id_obat;
-            $detail->save();
+            DetailPeriksa::where('id_periksa', $periksa->id)->delete();
+
+            foreach ($this->id_obats as $key => $value) {
+                DetailPeriksa::create(
+                    [
+                        'id_periksa' => $periksa->id,
+                        'id_obat' => $value,
+                    ]
+                );
+            }
+
             $this->dispatch('daftarPeriksaUpdated');
-            $this->dispatch('showCheckupDetails', id: $this->checkupId);
+            $this->dispatch('showCheckupDetails', id: $periksa->id);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -44,12 +58,15 @@ class CheckupEditForm extends Component
     public function render()
     {
         $obats = Obat::all();
-        $details = DetailPeriksa::where('id_periksa', $this->checkupId)->with(['periksa.pasien', 'obat'])->first();
-        $this->nama_pasien = $details->periksa->pasien->nama;
-        $this->tgl_periksa = Carbon::parse($details->periksa->tgl_periksa)->format('Y-m-d');
-        $this->id_obat = $details->id_obat;
-        $this->catatan = $details->periksa->catatan;
-        $this->biaya_periksa = $details->periksa->biaya_periksa;
-        return view('livewire.form.checkup-edit-form', compact('details', 'obats'));
+        $janji = JanjiPeriksa::where('id', $this->janjiId)->with('pasien.periksa')->first();
+        $periksa = $janji->pasien->periksa->where('id_janji_periksa', $this->janjiId)->first();
+        // dd($periksa);
+        $this->nama_pasien = $janji->pasien->nama;
+        if (!is_null($periksa)) {
+            $this->tgl_periksa = Carbon::parse($periksa->tgl_periksa)->format('Y-m-d');
+            $this->catatan = $periksa->catatan;
+            $this->biaya_periksa = $periksa->biaya_periksa;
+        }
+        return view('livewire.form.checkup-edit-form', compact('janji', 'obats'));
     }
 }

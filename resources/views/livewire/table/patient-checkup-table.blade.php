@@ -2,36 +2,39 @@
     <thead>
         <tr>
             <th class="pb-4 pt-2">No</th>
-            <th class="pb-4 pt-2">ID Periksa</th>
-            <th class="pb-4 pt-2">Tanggal Periksa</th>
-            <th class="pb-4 pt-2">Catatan</th>
-            <th class="pb-4 pt-2">Harga</th>
+            <th class="pb-4 pt-2">Poli</th>
+            <th class="pb-4 pt-2">Dokter</th>
+            <th class="pb-4 pt-2">Hari</th>
+            <th class="pb-4 pt-2">No. Antrian</th>
+            <th class="pb-4 pt-2">Status</th>
         </tr>
     </thead>
     <tbody>
-        @if (is_null($periksas))
+        @if (is_null($janjiPeriksas) || count($janjiPeriksas) < 1)
             <tr class="border-t-1 border-gray-300">
                 <td colspan="5" class="pb-2 pt-4 text-center">Belum Ada Periksa</td>
             </tr>
         @else
-            @foreach ($periksas as $periksa)
+            @foreach ($janjiPeriksas as $janji)
                 <tr>
                     <th class="pb-2 pt-4">{{ $loop->index + 1 }}</th>
-                    <td class="pb-2 pt-4">{{ $periksa->id }}</td>
-                    @if (is_null($periksa->tgl_periksa))
+                    @if (is_null($janji->dokter))
+                        <td class="pb-2 pt-4">Belum Ditentukan</td>
                         <td class="pb-2 pt-4">Belum Ditentukan</td>
                     @else
-                        <td class="pb-2 pt-4">{{ $periksa->tgl_periksa }}</td>
+                        <td class="pb-2 pt-4">{{ $janji->dokter->poli }}</td>
+                        <td class="pb-2 pt-4">{{ $janji->dokter->nama }}</td>
                     @endif
-                    @if (is_null($periksa->catatan))
+                    @if (is_null($janji->jadwalPeriksa))
                         <td class="pb-2 pt-4">Belum Ditentukan</td>
                     @else
-                        <td class="pb-2 pt-4">{{ $periksa->catatan }}</td>
+                        <td class="pb-2 pt-4">{{ $janji->jadwalPeriksa->hari }}</td>
                     @endif
-                    @if (is_null($periksa->biaya_periksa))
-                        <td class="pb-2 pt-4">Belum Ditentukan</td>
+                    <td class="pb-2 pt-4">{{ $janji->no_antrian }}</td>
+                    @if (is_null($janji->periksa))
+                        <td class="pb-2 pt-4">Belum Diperiksa</td>
                     @else
-                        <td class="pb-2 pt-4">Rp. {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}</td>
+                        <td class="pb-2 pt-4">{{ is_null($janji->periksa->tgl_periksa) ? "Belum Diperiksa" : "Sudah Diperiksa" }}</td>
                     @endif
                 </tr>
             @endforeach

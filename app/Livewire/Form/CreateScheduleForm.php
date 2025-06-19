@@ -33,12 +33,13 @@ class CreateScheduleForm extends Component
                 ->where('jam_mulai', $this->jam_mulai)
                 ->where('jam_selesai', $this->jam_selesai)->get();
 
-        if ($exist) {
+        if (count($exist) > 0) {
             $this->addError('error', 'Jadwal sudah terdaftar, silahkan buat jadwal lain!');
             return back()->withInput();
         }
 
         JadwalPeriksa::create($validated);
+        $this->dispatch('daftarJadwalUpdated');
     }
 
     public function render()
