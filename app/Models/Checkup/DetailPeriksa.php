@@ -30,6 +30,6 @@ class DetailPeriksa extends Model
      */
     public function obat(): BelongsTo
     {
-        return $this->belongsTo(Obat::class, 'id_obat', 'id');
+        return $this->belongsTo(Obat::class, 'id_obat', 'id')->withTrashed();
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Category\Poli;
 use App\Models\Checkup\JadwalPeriksa;
 use App\Models\Checkup\JanjiPeriksa;
 use App\Models\Checkup\Periksa;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -29,7 +31,7 @@ class User extends Authenticatable
         'no_ktp',
         'no_hp',
         'no_rm',
-        'poli',
+        'id_poli',
         'role'
     ];
 
@@ -62,6 +64,11 @@ class User extends Authenticatable
     public function janjiPeriksa(): HasMany
     {
         return $this->hasMany(JanjiPeriksa::class, 'id_pasien');
+    }
+
+    public function poli(): BelongsTo
+    {
+        return $this->belongsTo(Poli::class, 'id_poli', 'id');
     }
 
     /**

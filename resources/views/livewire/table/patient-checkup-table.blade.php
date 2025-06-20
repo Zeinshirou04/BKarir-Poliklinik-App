@@ -22,7 +22,7 @@
                         <td class="pb-2 pt-4">Belum Ditentukan</td>
                         <td class="pb-2 pt-4">Belum Ditentukan</td>
                     @else
-                        <td class="pb-2 pt-4">{{ $janji->dokter->poli }}</td>
+                        <td class="pb-2 pt-4">{{ is_null($janji->dokter->poli) ? "Belum Memilih" : $janji->dokter->poli->nama }}</td>
                         <td class="pb-2 pt-4">{{ $janji->dokter->nama }}</td>
                     @endif
                     @if (is_null($janji->jadwalPeriksa))

@@ -23,7 +23,7 @@ class PatientHistoryTable extends Component
     {
         $userId = Auth::user()->getAuthIdentifier();
         $janjiPeriksas = JanjiPeriksa::where('id_pasien', $userId)
-            ->with(['dokter', 'periksa', 'jadwalPeriksa'])
+            ->with(['dokter.poli', 'periksa', 'jadwalPeriksa'])
             ->get();
         return view('livewire.table.patient-history-table', compact('janjiPeriksas'));
     }

@@ -17,15 +17,17 @@ class CheckupEditForm extends Component
     public $tgl_periksa;
     public $id_obats;
     public $catatan;
-    public $biaya_periksa = 150000;
+    public $base_biaya_periksa = 150000;
+    public $biaya_periksa;
 
     public function update()
     {
         try {
-            $obats = Obat::whereIn('id', $this->id_obats)->get();
-            $this->biaya_periksa += $obats->sum('harga');
-            
-            // dd($this->biaya_periksa);
+            $this->biaya_periksa = $this->base_biaya_periksa;
+            if (!is_null($this->id_obats)) {
+                $obats = Obat::whereIn('id', $this->id_obats)->get();
+                $this->biaya_periksa += $obats->sum('harga');
+            }
 
             $periksa = Periksa::updateOrCreate(
                 ['id_janji_periksa' => $this->janjiId],
@@ -37,15 +39,17 @@ class CheckupEditForm extends Component
                 ]
             );
 
-            DetailPeriksa::where('id_periksa', $periksa->id)->delete();
+            if (!is_null($this->id_obats)) {
+                DetailPeriksa::where('id_periksa', $periksa->id)->delete();
 
-            foreach ($this->id_obats as $key => $value) {
-                DetailPeriksa::create(
-                    [
-                        'id_periksa' => $periksa->id,
-                        'id_obat' => $value,
-                    ]
-                );
+                foreach ($this->id_obats as $key => $value) {
+                    DetailPeriksa::create(
+                        [
+                            'id_periksa' => $periksa->id,
+                            'id_obat' => $value,
+                        ]
+                    );
+                }
             }
 
             $this->dispatch('daftarPeriksaUpdated');
@@ -60,8 +64,16 @@ class CheckupEditForm extends Component
         $obats = Obat::all();
         $janji = JanjiPeriksa::where('id', $this->janjiId)->with('pasien.periksa')->first();
         $periksa = $janji->pasien->periksa->where('id_janji_periksa', $this->janjiId)->first();
-        // dd($periksa);
+
+        try {
+            $detailPeriksa = DetailPeriksa::where('id_periksa', $periksa->id)->with('obat')->get();
+            $this->id_obats = $detailPeriksa->pluck('obat.id');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
         $this->nama_pasien = $janji->pasien->nama;
+        $this->biaya_periksa = $this->base_biaya_periksa;
         if (!is_null($periksa)) {
             $this->tgl_periksa = Carbon::parse($periksa->tgl_periksa)->format('Y-m-d');
             $this->catatan = $periksa->catatan;

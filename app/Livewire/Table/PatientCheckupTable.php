@@ -15,7 +15,7 @@ class PatientCheckupTable extends Component
     {
         $userId = Auth::user()->getAuthIdentifier();
         $janjiPeriksas = JanjiPeriksa::where('id_pasien', $userId)
-            ->with(['dokter', 'periksa', 'jadwalPeriksa'])
+            ->with(['dokter.poli', 'periksa', 'jadwalPeriksa'])
             ->get();
         // dd($janjiPeriksas);
         return view('livewire.table.patient-checkup-table', compact('janjiPeriksas'));

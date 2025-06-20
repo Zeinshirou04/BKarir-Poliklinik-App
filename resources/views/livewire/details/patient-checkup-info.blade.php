@@ -17,7 +17,8 @@
                         <h3 class="font-semibold text-md">Jenis Poli</h3>
                     </div>
                     <div id="riwayat-poli-content">
-                        <p>{{ $janji->jadwalPeriksa->dokter->poli }}</p>
+                        <p>{{ is_null($janji->jadwalPeriksa->dokter->poli) ? 'Belum Ditentukan' : $janji->jadwalPeriksa->dokter->poli }}
+                        </p>
                     </div>
                 </div>
                 <div id="riwayat-dokter-container"

@@ -28,7 +28,7 @@
                     @foreach ($janjiPeriksas as $janji)
                         <tr>
                             <th class="pb-2 pt-4 px-2">{{ $loop->index + 1 }}</th>
-                            <td class="pb-2 pt-4 px-2">{{ $janji->dokter->poli }}</td>
+                            <td class="pb-2 pt-4 px-2">{{ is_null($janji->dokter->poli) ? "Belum Memilih" : $janji->dokter->poli->nama }}</td>
                             <td class="pb-2 pt-4 px-2">{{ $janji->dokter->nama }}</td>
                             @if (is_null($janji->periksa))
                                 <td class="pb-2 pt-4 px-2">Belum Ditentukan</td>

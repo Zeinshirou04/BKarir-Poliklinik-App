@@ -22,15 +22,8 @@
                     <td class="p-4 border-b-2 border-b-gray-200">Rp.
                         {{ number_format($obat->harga, 0, ',', '.') }}</td>
                     <td class="p-4 border-b-2 border-b-gray-200">
-                        @if ($mode === 'edit' && $currentDrugId === $obat->id)
-                            <button wire:click="emitCancelEditDrug({{ $obat->id }})"
-                                class="bg-red-500 text-white px-3 py-1 rounded-md">Cancel</button>
-                        @else
-                            <button wire:click="emitEditDrug({{ $obat->id }})"
-                                class="bg-blue-500 text-white px-3 py-1 rounded-md">Edit</button>
-                            <button wire:click="emitDeleteDrug({{ $obat->id }})"
-                                class="bg-red-500 text-white px-3 py-1 rounded-md">Delete</button>
-                        @endif
+                        <button wire:click="restoreDrug({{ $obat->id }})"
+                            class="bg-blue-500 text-white px-3 py-1 rounded-md">Pulihkan</button>
                     </td>
                 </tr>
             @endforeach

@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
-class Header extends Component
+class ProfileSidebar extends Component
 {
     /**
      * Create a new component instance.
@@ -26,10 +26,8 @@ class Header extends Component
 
         $user = (object) [
             'id' => $auth->id,
-            'nama' => $auth->nama,
-            'role' => $auth->role
         ];
 
-        return view('components.layouts.header', compact('user'));
+        return view('components.layouts.profile-sidebar', compact('user'));
     }
 }

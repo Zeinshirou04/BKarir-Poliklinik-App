@@ -11,6 +11,11 @@ class DrugListTable extends Component
     public ?int $currentDrugId;
     public string $mode = 'none';
 
+    public function emitTrashedDrug() {
+        $this->mode = 'trashed';
+        $this->dispatch('editTrashedDrugData');
+    }
+
     public function emitEditDrug(int $id) {
         $this->mode = 'edit';
         $this->currentDrugId = $id;
